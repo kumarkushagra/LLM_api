@@ -1,13 +1,17 @@
-import requests
+from transformers import AutoProcessor, SeamlessM4TModel
+import torchaudio
 
-def speech_to_text(audio_file_path, tgt_lang, api_token):
-    api_url = "https://api-inference.huggingface.co/models/facebook/seamless-m4t-v2-large"
-    headers = {"Authorization": f"Bearer {api_token}"}
-    with open(audio_file_path, "rb") as f:
-        audio_data = f.read()
-    payload = {
-        "inputs": audio_data,
-        "parameters": {"tgt_lang": tgt_lang, "generate_speech": False}
-    }
-    response = requests.post(api_url, headers=headers, data=payload)
-    return response.json()
+def speech_to_text(processor, model, input_audio_file_path, output_lang):
+
+    # Load the audio file
+    audio_sample, sample_rate = torchaudio.load(input_audio_file_path)
+    audio_sample_array = audio_sample[0].numpy()
+
+    # Process the audio, specifying the sampling rate
+    audio_inputs = processor(audios=audio_sample_array, sampling_rate=sample_rate, return_tensors="pt")
+
+    # Generate output tokens
+    output_tokens = model.generate(**audio_inputs, tgt_lang=output_lang, generate_speech=False)
+    translated_text_from_audio = processor.decode(output_tokens[0].tolist()[0], skip_special_tokens=True)
+
+    return translated_text_from_audio

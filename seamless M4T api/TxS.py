@@ -2,14 +2,10 @@ from transformers import AutoProcessor, SeamlessM4TModel
 import scipy.io.wavfile
 from IPython.display import Audio
 
-# processor = AutoProcessor.from_pretrained(r"F:\facebook\hf-seamless-m4t-large")
-# model = SeamlessM4TModel.from_pretrained(r"F:\facebook\hf-seamless-m4t-large")
-
-
 def text_to_speech(processor, model, input_text, input_lang, output_lang, output_path):
     text_inputs = processor(text = input_text, src_lang=input_lang, return_tensors="pt")
-
     audio_array_from_text = model.generate(**text_inputs, tgt_lang=output_lang)[0].cpu().numpy().squeeze()
+    
     # Define the sample rate from model config
     sample_rate = model.config.sampling_rate
     # Save the audio to a WAV file
