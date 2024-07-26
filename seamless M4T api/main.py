@@ -30,4 +30,4 @@ if __name__ == "__main__":
     # print(speech_to_text(processor, model, output_speech_path, "eng"))
 
     # Speech to Speech
-    speech_to_speech(processor, model, input_audio_file_path, "hin", output_speech_path)
+    # speech_to_speech(processor, model, input_audio_file_path, "hin", output_speech_path)
