@@ -1,6 +1,8 @@
 # gradio_app.py
 from transformers import AutoProcessor, SeamlessM4TModel
 import gradio as gr
+from IPython.display import Audio
+
 from TxS import text_to_speech
 from TxT import text_to_text
 from SxT import speech_to_text
@@ -8,7 +10,7 @@ from SxS import speech_to_speech
 import os
 
 # Define the output directory
-OUTPUT_DIR = "output"
+OUTPUT_DIR = "temperory_storage"
 
 # Ensure the output directory exists
 os.makedirs(OUTPUT_DIR, exist_ok=True)
